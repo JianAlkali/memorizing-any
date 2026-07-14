@@ -529,6 +529,7 @@ function App() {
   const [celebrating, setCelebrating] = useState(false)
   const [editingProject, setEditingProject] = useState<Project | null>(null)
   const [editingCard, setEditingCard] = useState<KnowledgeCard | null>(null)
+  const [deleteConfirm, setDeleteConfirm] = useState<{ type: 'project' | 'card'; id: string; title: string } | null>(null)
   const [message, setMessage] = useState('默认离线模式已就绪。可以直接复制内容开始，也可以在设置中接入模型接口。')
   const [tab, setTab] = useState<'learn' | 'cards' | 'settings' | 'draft' | 'projects'>('learn')
 
@@ -810,6 +811,13 @@ function App() {
       reviews: prev.reviews.filter((review) => review.cardId !== cardId),
     }))
     setMessage('记忆卡及相关题目已删除。')
+  }
+
+  function confirmDelete() {
+    if (!deleteConfirm) return
+    if (deleteConfirm.type === 'project') deleteProject(deleteConfirm.id)
+    if (deleteConfirm.type === 'card') deleteCard(deleteConfirm.id)
+    setDeleteConfirm(null)
   }
 
   function addProject() {
@@ -1113,6 +1121,26 @@ Session ID：
           </div>
         )}
 
+        {deleteConfirm && (
+          <div className="modal-backdrop" role="dialog" aria-modal="true" aria-label="删除确认">
+            <section className="confirm-modal">
+              <h2>确认删除？</h2>
+              <p>
+                将删除{deleteConfirm.type === 'project' ? '项目' : '记忆卡'}：<strong>{deleteConfirm.title}</strong>
+              </p>
+              <p className="modal-hint">
+                {deleteConfirm.type === 'project'
+                  ? '项目下的卡片、题目和复习记录也会一起删除。此操作不能在页面内撤销。'
+                  : '相关题目和复习记录也会一起删除。此操作不能在页面内撤销。'}
+              </p>
+              <div className="button-row">
+                <button className="danger" type="button" onClick={confirmDelete}>确认删除</button>
+                <button className="ghost" type="button" onClick={() => setDeleteConfirm(null)}>取消</button>
+              </div>
+            </section>
+          </div>
+        )}
+
         <section className="greeting-card" aria-label="每日问候">
           <div>
             <p className="eyebrow"><Sparkles size={16} /> 每日问候</p>
@@ -1328,7 +1356,7 @@ Session ID：
                             type="button"
                             disabled={project.id === 'p_scattered'}
                             title={project.id === 'p_scattered' ? '零散记忆是默认项目，不能删除' : '删除项目'}
-                            onClick={() => deleteProject(project.id)}
+                            onClick={() => setDeleteConfirm({ type: 'project', id: project.id, title: project.name })}
                           >
                             {project.id === 'p_scattered' ? '默认项目' : '删除'}
                           </button>
@@ -1371,7 +1399,7 @@ Session ID：
                       <p className="schedule"><CalendarClock size={15} /> 下次复习：{new Date(card.nextReviewAt).toLocaleString()}</p>
                       <div className="mini-actions">
                         <button className="ghost" type="button" onClick={() => setEditingCard(card)}>编辑</button>
-                        <button className="ghost danger-text" type="button" onClick={() => deleteCard(card.id)}>删除</button>
+                        <button className="ghost danger-text" type="button" onClick={() => setDeleteConfirm({ type: 'card', id: card.id, title: card.title })}>删除</button>
                       </div>
                     </>
                   )}

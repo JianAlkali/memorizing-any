@@ -160,6 +160,7 @@ code { border-radius: 8px; padding: 0.12rem 0.36rem; background: var(--bg-soft);
 .focus-mode .review-panel { min-height: calc(100vh - 4rem); display: flex; flex-direction: column; justify-content: center; }
 .modal-backdrop { position: fixed; inset: 0; z-index: 30; display: grid; place-items: center; padding: 1rem; background: rgba(46,36,29,.32); backdrop-filter: blur(8px); }
 .api-modal { width: min(620px, 100%); max-height: min(760px, calc(100vh - 2rem)); overflow: auto; border: 1px solid var(--border); border-radius: var(--radius); background: var(--panel-solid); box-shadow: 0 30px 90px rgba(46,36,29,.24); padding: 1.25rem; }
+.confirm-modal { width: min(460px, 100%); border: 1px solid rgba(184,91,91,.22); border-radius: var(--radius); background: var(--panel-solid); box-shadow: 0 30px 90px rgba(46,36,29,.24); padding: 1.4rem; }
 .modal-hint { margin: 1rem 0 0; color: var(--muted); }
 .markdown-preview { max-width: 880px; padding: 1rem; border-radius: 20px; background: rgba(255, 255, 255, 0.58); }
 .markdown-preview li, .memory-card li, .answer-box li { margin: 0.25rem 0; }
