@@ -1,0 +1,10 @@
+node_modules/
+dist/
+.vite/
+.history/
+.env
+.env.*
+*.local
+zizhuj-demo-dist.zip
+.DS_Store
+Thumbs.db
