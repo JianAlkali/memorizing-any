@@ -69,10 +69,10 @@ GitHub 仓库：
 https://github.com/JianAlkali/memorizing-any
 
 发布 zip：
-【在这里填写 zizhuj-demo-dist.zip 附件位置或网盘/GitHub Release 链接】
+【在这里填写 zizhuj-memory-dist.zip 附件位置或网盘/GitHub Release 链接】
 
 本地下载版使用方式：
-1. 下载并解压 zizhuj-demo-dist.zip；
+1. 下载并解压 zizhuj-memory-dist.zip；
 2. 双击“双击打开-发布版.bat”；
 3. 浏览器会打开本地网页；
 4. 如果浏览器没有自动打开，可访问启动窗口中显示的本地地址；

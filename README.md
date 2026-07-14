@@ -1,6 +1,6 @@
-# 自助记 Demo 运行说明
+# 自助记运行说明
 
-这是一个本地优先的 AI 记忆卡片与复习 Demo，面向用户直接下载体验。
+这是一个本地优先的 AI 记忆卡片与复习应用，面向用户直接下载体验。
 
 ## 快速运行
 
@@ -26,11 +26,11 @@ npm run preview
 npm run pack:dist
 ```
 
-会生成 `zizhuj-demo-dist.zip`，里面是可部署的静态站点文件。上传到个人网站时，通常上传 `dist` 目录内容或这个 zip 解压后的内容。
+会生成 `zizhuj-memory-dist.zip`，里面是可部署的静态站点文件。上传到个人网站时，通常上传 `dist` 目录内容或这个 zip 解压后的内容。
 
 ## 模型接口说明
 
-- 默认不需要任何密钥，可直接使用离线演示生成能力。
+- 默认不需要任何密钥，可使用临时离线方案体验核心流程；真实学习内容建议接入模型生成。
 - 设置页内置多个常用模型预设，也支持自定义兼容 OpenAI Chat Completions 的接口地址和模型名。
 - 访问令牌只保存在浏览器 localStorage，不写入导出的记忆数据；用户可以在设置页覆盖或删除。
 - 如果部署到公开网站，建议使用服务端代理调用模型，避免在前端暴露密钥。
@@ -56,7 +56,7 @@ npm run pack:dist
 ```powershell
 git init
 git add package.json package-lock.json index.html src README.md .gitignore 自助记-初赛作品帖草稿.txt
-git commit -m "init zizhuj demo"
+git commit -m "init zizhuj memory"
 ```
 
 如果之后要做开发版和发布版，可以用：
@@ -80,5 +80,4 @@ git commit -m "init zizhuj demo"
 - 多模型 API 预设
 - 每日问候：默认问候 / AI 个性化问候 / 近一周去重记录
 - 无 API Key 首次显式提醒
-- 结构化 JSON 校验与模型失败降级
-- 参赛作品帖草稿与 txt 导出
+- 结构化 JSON 校验、AI JSON 修复与模型失败重试

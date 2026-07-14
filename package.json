@@ -1,5 +1,5 @@
 {
-  "name": "zizhuj-memory-demo",
+  "name": "zizhuj-memory",
   "private": true,
   "version": "0.1.0",
   "type": "module",
@@ -9,7 +9,7 @@
     "lint": "oxlint",
     "preview": "vite preview",
     "start": "vite --host 0.0.0.0",
-    "pack:dist": "npm run build && powershell -NoProfile -Command \"Copy-Item '用户使用说明.txt' dist/'用户使用说明.txt' -Force; Copy-Item '双击打开-发布版.bat' dist/'双击打开-发布版.bat' -Force; Copy-Item local-server.cjs dist/local-server.cjs -Force; Compress-Archive -Path dist/* -DestinationPath zizhuj-demo-dist.zip -Force\""
+    "pack:dist": "npm run build && powershell -NoProfile -Command \"Copy-Item '用户使用说明.txt' dist/'用户使用说明.txt' -Force; Copy-Item '双击打开-发布版.bat' dist/'双击打开-发布版.bat' -Force; Copy-Item local-server.cjs dist/local-server.cjs -Force; Compress-Archive -Path dist/* -DestinationPath zizhuj-memory-dist.zip -Force\""
   },
   "dependencies": {
     "katex": "^0.17.0",

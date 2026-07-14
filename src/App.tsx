@@ -7,7 +7,6 @@ import {
   Check,
   ChevronRight,
   Download,
-  Edit3,
   KeyRound,
   Layers3,
   Plus,
@@ -220,11 +219,6 @@ function loadState(): AppState {
     const raw = localStorage.getItem('zizhuj-state')
     if (!raw) return defaultState
     const parsed = JSON.parse(raw) as AppState
-    const hasOldDemo = parsed.projects?.some((project) => project.id === 'p_python') || parsed.cards?.some((card) => card.id === 'c_variable')
-    if (hasOldDemo && !localStorage.getItem('zizhuj-migrated-empty-v2')) {
-      localStorage.setItem('zizhuj-migrated-empty-v2', 'true')
-      return defaultState
-    }
     return {
       ...defaultState,
       ...parsed,
@@ -249,6 +243,7 @@ function detectInputType(text: string): ProjectType {
   return 'study'
 }
 
+// 临时离线方案：无 API Key 时用于保证核心流程可体验；真实学习内容建议接入模型生成。
 function buildFallbackPayload(input: string, projectType: ProjectType, prefs: GlobalPrefs): AiPayload {
   const short = input.trim().slice(0, 36) || '新知识'
   const isPython = /python|变量|编程|代码/i.test(input)
@@ -725,7 +720,7 @@ function App() {
   const [messagePulse, setMessagePulse] = useState(0)
   const [precheck, setPrecheck] = useState<PrecheckResult | null>(null)
   const [precheckAnswer, setPrecheckAnswer] = useState('')
-  const [tab, setTab] = useState<'learn' | 'cards' | 'settings' | 'draft' | 'projects'>('learn')
+  const [tab, setTab] = useState<'learn' | 'cards' | 'settings' | 'projects'>('learn')
 
   useEffect(() => {
     localStorage.setItem('zizhuj-state', JSON.stringify(state))
@@ -1171,148 +1166,6 @@ function App() {
     URL.revokeObjectURL(url)
   }
 
-  function downloadText(filename: string, content: string) {
-    const blob = new Blob([content], { type: 'text/plain;charset=utf-8' })
-    const url = URL.createObjectURL(blob)
-    const anchor = document.createElement('a')
-    anchor.href = url
-    anchor.download = filename
-    anchor.click()
-    URL.revokeObjectURL(url)
-  }
-
-  const articleDraft = `【标题】学习工作赛道｜自助记：把任何内容变成会主动复习你的 AI 记忆系统
-
-【标签】学习工作
-
-一、Demo 简介
-
-1. 是什么
-自助记是一个 AI 辅助记忆与复习网站。用户把想学、想记或想复习的内容复制进去，系统会自动拆分知识点，生成记忆卡片和题目，并根据用户的作答表现调整后续复习。
-
-2. 面向谁
-- 正在备考，需要把课程材料快速转成题目的学生；
-- 想系统学习某项技能，但不知道如何拆分知识点的学习者；
-- 喜欢摘抄网上小知识、小句子，希望随手复习的人；
-- 需要记生日、提醒、抽象感知训练等零散事项的人；
-- 希望用 AI 做个性化间隔复习的人。
-
-3. 主要功能
-- 输入即生成：粘贴材料或输入目标后，生成知识卡片、单选/填空/简答题和解析。
-- 个性化复习：每个知识点独立记录掌握度和下次复习时间。
-- 反馈驱动：支持正确、半对、不对、太难、太简单、不相关、复习但不计入。
-- 零散记忆：生日、提醒、小句子等无需复杂配置，可直接加入零散记忆。
-- 每日问候：无 API 时使用默认问候，有 API 时可结合用户记忆生成更有“懂你感”的问候，并保存近一周避免重复。
-- 本地优先：默认离线可体验；有 API Key 的用户可在设置页临时接入常见模型接口。
-
-【此处插入产品首页截图】
-【此处插入复习交互截图】
-【此处插入卡片库/设置页截图】
-
-二、Demo 创作思路
-
-最初的想法来自一个很常见的学习痛点：AI 可以解释知识，但“记住”仍然要靠用户自己反复安排复习。很多工具只给答案，不知道用户到底哪里不会、什么时候该再见到这个知识点。
-
-所以我把自助记设计成一个以“知识点”为核心，而不是以“一次对话”为核心的记忆系统：
-
-1. 用户输入材料后，AI 先拆成可复习的知识点；
-2. 每个知识点都有自己的掌握度、题目、错因和下次复习时间；
-3. 用户回答后，系统不只是判断对错，还允许反馈“太难、太简单、不相关”；
-4. 后续题目应根据这些反馈改变难度和方向；
-5. 对于很小的记忆，例如“朋友生日”“出门带什么”，则尽量减少操作成本，直接放入零散记忆。
-
-这个 Demo 当前是网站形式，适合本地下载体验和部署到个人网站；未来如果做成 App，可以进一步加入系统提醒、语音、录音、拍照、画板等能力。
-
-三、Demo 体验地址
-
-体验链接：
-【在这里填写你的公开体验链接】
-
-备用本地运行方式：
-1. 下载项目压缩包；
-2. 安装依赖：npm install；
-3. 启动本地服务：npm run dev；
-4. 打开终端显示的本地地址。
-
-如果上传 HTML/Zip：
-【在这里填写 zizhuj-demo-dist.zip 附件位置或网盘/GitHub 链接】
-
-四、TRAE 实践过程
-
-本作品主要使用 TRAE 完成需求梳理、项目搭建、前端实现、交互调整和参赛文章整理。
-
-1. 需求梳理
-使用 TRAE 从最初的想法中整理出产品定位、用户流程、MVP 范围、数据模型和复习交互逻辑。
-
-关键截图：
-【截图 1：需求梳理/产品结构】
-Session ID：
-【填写 Session ID 1】
-
-2. 项目搭建与核心功能实现
-使用 TRAE 创建 React + Vite 本地项目，实现项目记忆、零散记忆、知识卡片、题目、复习记录、Markdown/LaTeX 渲染和本地缓存。
-
-关键截图：
-【截图 2：代码生成/项目结构/核心功能】
-Session ID：
-【填写 Session ID 2】
-
-3. AI 接口、安全与本地体验
-使用 TRAE 设计兼容 OpenAI Chat Completions 的模型接口配置，加入多模型预设、结构化 JSON 校验、模型失败降级、上下文摘要和提示注入防护思路。
-
-关键截图：
-【截图 3：AI 接口/设置页/安全逻辑】
-Session ID：
-【填写 Session ID 3】
-
-4. UI 与交互优化
-使用 TRAE 调整为温馨、简洁的 UI 风格，加入项目页、每日问候、插画装饰、分阶段复习按钮、作品帖草稿 txt 导出等体验细节。
-
-关键截图：
-【截图 4：UI 调整/复习流程/每日问候】
-Session ID：
-【填写 Session ID 4，可选】
-
-五、作品亮点
-
-1. 不只是“生成题目”，而是维护知识点掌握状态。
-2. 用户反馈比 AI 默认判断更重要，能表达“太难、太简单、不相关”。
-3. 对零散小记忆低门槛处理，适合真实日常使用。
-4. 默认无 API Key 也可体验，有 Key 时可接入常见模型。
-5. 本地版不内置密钥，用户数据主要保存在浏览器本地。
-6. 每日问候让工具更像一个学习伙伴，而不是冷冰冰的题库。
-7. 支持 Markdown + LaTeX，适合课程、数学、编程等多类内容。
-
-六、当前 Demo 边界与未来扩展
-
-当前已实现：
-- 项目与零散记忆；
-- 卡片生成与查看；
-- 单选、填空、简答题；
-- 直接作答与脑中作答；
-- 复习调度；
-- 每日问候；
-- 模型接口配置；
-- 数据导出；
-- 作品帖草稿导出。
-
-后续计划：
-- 系统通知与移动端提醒；
-- 语音播放和录音，支持语言学习；
-- 图片输入和图片生成；
-- 画板与手写解析；
-- 排序题、配对题、综合题；
-- 更完整的复习算法和学习统计。
-
-七、报名帖链接
-
-社区报名帖链接：
-【在这里填写你的报名帖链接】
-
-八、补充说明
-
-本作品为初赛 Demo，重点展示核心价值和可体验流程。当前版本不追求完整商业化能力，而是优先验证“用户输入任意内容 → AI 拆知识点 → 生成题目 → 根据反馈安排复习”的闭环。`
-
 
   return (
     <div className={`app-shell ${focusMode ? 'focus-mode' : ''}`}>
@@ -1390,7 +1243,7 @@ Session ID：
             </div>
             <div>
               <strong>当前是无接口体验模式</strong>
-              <p>你可以先体验离线演示；添加 API 密钥后，AI 会根据真实材料生成更准确的卡片、题目、解析和每日问候。之后也可以在“设置”里随时更改或删除。</p>
+              <p>你可以先体验临时离线方案；添加 API 密钥后，AI 会根据真实材料生成更准确的卡片、题目、解析和每日问候。之后也可以在“设置”里随时更改或删除。</p>
             </div>
             <div className="api-notice-actions">
               <button type="button" onClick={() => setShowApiModal(true)}>添加 API 密钥</button>
@@ -1819,21 +1672,6 @@ Session ID：
           </section>
         )}
 
-        {tab === 'draft' && (
-          <section className="panel draft-panel">
-            <div className="panel-heading">
-              <div>
-                <p className="eyebrow">参赛作品帖草稿</p>
-                <h2>可复制后补充截图与 Session ID</h2>
-              </div>
-              <div className="button-row">
-                <button type="button" onClick={() => navigator.clipboard.writeText(articleDraft)}><Edit3 size={18} /> 复制草稿</button>
-                <button className="ghost" type="button" onClick={() => downloadText('自助记-初赛作品帖草稿.txt', articleDraft)}><Download size={18} /> 下载 txt</button>
-              </div>
-            </div>
-            <div className="markdown-preview"><MarkdownBlock>{articleDraft}</MarkdownBlock></div>
-          </section>
-        )}
       </main>
     </div>
   )
