@@ -1125,6 +1125,12 @@ Session ID：
                   <button className="ghost" type="button" onClick={() => setFocusMode((value) => !value)}>{focusMode ? '退出专注' : '专注全屏'}</button>
                 </div>
               </div>
+              {currentQuestion && (
+                <label className="toggle-row compact review-toggle">
+                  <input type="checkbox" checked={notCounted} onChange={(event) => setNotCounted(event.target.checked)} />
+                  复习但不计入掌握度
+                </label>
+              )}
 
               {currentQuestion ? (
                 <div className="question-card">
@@ -1156,11 +1162,6 @@ Session ID：
                   {(currentQuestion.type === 'cloze' || currentQuestion.type === 'short') && mode === '直接作答' && (
                     <textarea className="answer-input" value={freeAnswer} onChange={(event) => setFreeAnswer(event.target.value)} placeholder="在这里写下你的答案。" />
                   )}
-
-                  <label className="toggle-row compact">
-                    <input type="checkbox" checked={notCounted} onChange={(event) => setNotCounted(event.target.checked)} />
-                    复习但不计入掌握度
-                  </label>
 
                   {!showAnswer && (
                     <div className="button-row wrap">
@@ -1281,7 +1282,15 @@ Session ID：
                         </button>
                         <div className="mini-actions">
                           <button className="ghost" type="button" onClick={() => setEditingProject(project)}>编辑</button>
-                          <button className="ghost danger-text" type="button" onClick={() => deleteProject(project.id)}>删除</button>
+                          <button
+                            className="ghost danger-text"
+                            type="button"
+                            disabled={project.id === 'p_scattered'}
+                            title={project.id === 'p_scattered' ? '零散记忆是默认项目，不能删除' : '删除项目'}
+                            onClick={() => deleteProject(project.id)}
+                          >
+                            {project.id === 'p_scattered' ? '默认项目' : '删除'}
+                          </button>
                         </div>
                       </>
                     )}

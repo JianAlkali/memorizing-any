@@ -136,6 +136,7 @@ code { border-radius: 8px; padding: 0.12rem 0.36rem; background: var(--bg-soft);
 .settings-grid label { display: grid; gap: 0.4rem; color: var(--heading); font-weight: 700; }
 .toggle-row { margin: 1rem 0; align-items: center; color: var(--heading); font-weight: 700; }
 .toggle-row.compact { margin: .75rem 0 0; font-size: .94rem; color: var(--muted); }
+.review-toggle { justify-content: flex-end; margin: -.35rem 0 .9rem; }
 .toggle-row input { width: auto; }
 .security-box { margin-top: 1rem; align-items: flex-start; }
 .security-box p, .recent-greetings p { margin-bottom: 0; }
