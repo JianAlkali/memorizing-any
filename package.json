@@ -9,7 +9,7 @@
     "lint": "oxlint",
     "preview": "vite preview",
     "start": "vite --host 0.0.0.0",
-    "pack:dist": "npm run build && powershell -NoProfile -Command \"Copy-Item README.md dist/README.md -Force; Copy-Item '自助记-初赛作品帖草稿.txt' dist/'自助记-初赛作品帖草稿.txt' -Force; Compress-Archive -Path dist/* -DestinationPath zizhuj-demo-dist.zip -Force\""
+    "pack:dist": "npm run build && powershell -NoProfile -Command \"Copy-Item '用户使用说明.txt' dist/'用户使用说明.txt' -Force; Copy-Item '双击打开-发布版.bat' dist/'双击打开-发布版.bat' -Force; Copy-Item local-server.cjs dist/local-server.cjs -Force; Compress-Archive -Path dist/* -DestinationPath zizhuj-demo-dist.zip -Force\""
   },
   "dependencies": {
     "katex": "^0.17.0",
