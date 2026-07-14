@@ -101,6 +101,7 @@ code { border-radius: 8px; padding: 0.12rem 0.36rem; background: var(--bg-soft);
 .eyebrow { margin-bottom: 0.35rem; text-transform: uppercase; letter-spacing: 0.08em; font-weight: 700; }
 .hint-box, .answer-box, .security-box, .empty-state, .recent-greetings { border-radius: 20px; padding: 1rem; background: rgba(232, 239, 217, 0.46); border: 1px solid var(--border); }
 .hint-box { margin-top: 1rem; }
+.input-target { display: grid; gap: .4rem; margin: .8rem 0; color: var(--heading); font-weight: 700; }
 .question-card { animation: rise-in 260ms ease both; }
 .question-type { display: inline-flex; padding: 0.25rem 0.7rem; border-radius: 999px; color: var(--primary-dark); background: var(--primary-soft); font-size: 0.82rem; font-weight: 800; margin-bottom: 0.75rem; }
 .option-list { display: grid; gap: 0.65rem; margin: 1rem 0; }
