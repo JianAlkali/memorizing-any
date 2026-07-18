@@ -1681,10 +1681,13 @@ function App() {
                   <option>直接作答</option><option>脑中作答</option>
                 </select>
               </label>
-              <label className="toggle-row settings-wide">
-                <input type="checkbox" checked={state.prefs.allowThinking} onChange={(event) => updateState((prev) => ({ ...prev, prefs: { ...prev.prefs, allowThinking: event.target.checked } }))} />
-                允许思考：生成 JSON 时附带一个内部自检字段，解释时会忽略
-              </label>
+              <div className="settings-wide toggle-row compact">
+                <label className="inline-check">
+                  <input type="checkbox" checked={state.prefs.allowThinking} onChange={(event) => updateState((prev) => ({ ...prev, prefs: { ...prev.prefs, allowThinking: event.target.checked } }))} />
+                  允许思考
+                </label>
+                <small>提升生成稳定性</small>
+              </div>
               <label className="settings-wide">全局记忆 / 配置
                 <textarea value={state.prefs.globalMemory} onChange={(event) => updateState((prev) => ({ ...prev, prefs: { ...prev.prefs, globalMemory: event.target.value } }))} placeholder="例如：默认题量 8；解释风格先通俗后术语；不使用 emoji；偏好后端开发例子。全局记忆优先于系统缺省配置。" />
               </label>
